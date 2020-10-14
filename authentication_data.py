@@ -13,7 +13,7 @@ access_token_secret = ""
 
 def beat(t=1):
     sleep(t)
-    print("\n")
+    print("")
     sleep(t)
     return None
 

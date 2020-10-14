@@ -61,7 +61,7 @@ def set_verbosity(args):
 if __name__ == "__main__":
     args = parser.parse_args()
     set_verbosity(args)
-
+    logger.info("Verbose mode enabled.")
     logger.debug("Arguments: {}".format(args))
 
     for data in auth_data:

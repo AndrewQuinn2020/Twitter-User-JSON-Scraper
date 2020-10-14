@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # Special to this project.
-.authentication_data\.py
+authentication_data.py

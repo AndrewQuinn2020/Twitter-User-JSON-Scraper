@@ -10,6 +10,8 @@ consumer_secret = ""
 access_token = ""
 access_token_secret = ""
 
+auth_data = [consumer_key, consumer_secret, access_token, access_token_secret]
+
 
 def beat(t=1):
     sleep(t)

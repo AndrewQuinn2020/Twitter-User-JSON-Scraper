@@ -21,10 +21,10 @@ logger.addHandler(handler)
 if __name__ == "__main__":
     logger.info("Hello, TenTweetsFrom.")
     logger.info("-" * 80)
-    logger.info("")
 
-    if len("") == 0:
-        logger.warning("EMPTY")
+    for data in auth_data:
+        if len(data) == 0:
+            logger.warning("A string in `authentication_data.py` is empty.")
 
     auth = tw.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)

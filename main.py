@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
-import logging     # installed by default
-import colorlog    # run python -m pip install colorlog
+
+import logging
+import colorlog                   # python -m pip install colorlog
+import tweepy as tw               # python -m pip install tweepy
 
 # Setup
 
@@ -14,4 +16,5 @@ logger.addHandler(handler)
 
 
 if __name__ == "__main__":
-    logger.debug("Hello, TenTweetsFrom.")
+    logger.info("Hello, TenTweetsFrom.")
+    logger.info("-" * 80)

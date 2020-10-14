@@ -81,6 +81,26 @@ def set_verbosity(args):
     else:
         return None
 
+def dump_json(user, dir=user_json_dir, timestamp=now().format('YYYY_MM_DD-HH_mm_ss')):
+    """Given a list of User() objects, dump pretty printed versions of their
+    JSON files into dir.
+
+    Returns the (absolute) path of the file it was saved into."""
+    path = os.path.join(dir, str(user.screen_name) + "__" +
+                        str(timestamp) + ".json")
+    with open(path, 'w') as file:
+        logger.info(("Writing JSON user data for {}, aka `@{}`, to "
+                    "\n\t{}".format(user.name, user.screen_name, path)))
+        json.dump(user._json, file, indent=4, sort_keys=True)
+    return path
+
+
+def dump_jsons(users, dir=user_json_dir, timestamp=now().format('YYYY_MM_DD-HH_mm_ss')):
+    """Just a wrapper for dump_json over an iterable.
+
+    Returns a list of the paths the files were saved into."""
+    return list(map(lambda u: dump_json(u, dir, timestamp), users))
+
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -105,17 +125,10 @@ if __name__ == "__main__":
     users = []
     for username in args.usernames:
         logger.info("Getting data from API for {}".format(username))
+        logger.debug("\n\n")
         users.append(auth_api.get_user(username))
-        logger.info("{} acquired!".format(username))
+        logger.debug("\n\n")
 
     users_overview(users)
 
-    # For the sake of making it easy to understand what the hell is going
-    # on with User() objects, we dump them all into user_json_dir.
-
-    timestamp = now().format('YYYY_MM_DD-HH_mm_ss')
-    for user in users:
-        path = os.path.join(user_json_dir, str(user.screen_name) + "__" + str(timestamp) + ".json")
-        with open(path, 'w') as file:
-            logger.debug("Writing JSON user data for {}, aka `@{}`, to {}.".format(user.name, user.screen_name, path))
-            json.dump(user._json, file, indent=4, sort_keys=True)
+    dump_jsons(users)

@@ -59,23 +59,6 @@ optional arguments:
   -q, --quiet    All debug and error messages off. Overrides `-v`.
 ```
 
-```bash
-$ python scrape.py jack
-WARNING:root:User JSON file directory doesn't exist - attempting to create @ /........here.........../TenTweetsFrom/user_jsons/
-$ head user_jsons/jack__2020_10_14-20_59_09.json 
-{
-    "contributors_enabled": false,
-    "created_at": "Tue Mar 21 20:50:14 +0000 2006",
-    "default_profile": false,
-    "default_profile_image": false,
-    "description": "#bitcoin",
-    "entities": {
-        "description": {
-            "urls": []
-        }
-$ 
-```
-
 # Example File Output
 ```json
 {

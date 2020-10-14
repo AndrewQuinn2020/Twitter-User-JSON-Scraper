@@ -48,7 +48,6 @@ if __name__ == "__main__":
 
     print("This will make it so git stops tracking this file on your PC.")
 
-
     beat()
 
     print("    git update-index --no-assume-unchanged authentication_data.py")
@@ -58,5 +57,5 @@ if __name__ == "__main__":
     print("will reverse this process.")
 
     beat()
-    
+
     print("-" * 80)

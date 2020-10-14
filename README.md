@@ -6,9 +6,9 @@ A very simple CLI that goes through a list of Twitter usernames and downloads ba
 
 Clone this into a GitHub directory, and run it like so:
 
-```bash
+```
 $ python scrape.py jack
-WARNING:root:User JSON file directory doesn't exist - attempting to create @ /........here.........../TenTweetsFrom/user_jsons/
+WARNING:root:User JSON file directory doesn't exist - attempting to create @ /........here.........../user_jsons/
 $ head user_jsons/jack__2020_10_14-20_59_09.json 
 {
     "contributors_enabled": false,
@@ -21,6 +21,23 @@ $ head user_jsons/jack__2020_10_14-20_59_09.json
             "urls": []
         }
 $ 
+$ python scrape.py dril -vvvv
+INFO:root:Verbose mode enabled.
+INFO:root:Getting data from API for dril
+INFO:root:Writing JSON user data for wint, aka `@dril`, to 
+	/........here.........../user_jsons/dril__2020_10_14-21_05_22.json
+$ 
+$ tail user_jsons/dril__2020_10_14-21_05_22.json 
+        "text": "they should invent toilet paper that you can throw in the Trash instead of the toilet",
+        "truncated": false
+    },
+    "statuses_count": 10140,
+    "time_zone": null,
+    "translator_type": "none",
+    "url": "https://t.co/gFieIN1TkS",
+    "utc_offset": null,
+    "verified": false
+
 ```
 
 # Command-Line Options

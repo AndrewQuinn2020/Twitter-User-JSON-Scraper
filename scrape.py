@@ -19,24 +19,29 @@ from authentication_data import *
 
 # Setup the colored error message logger.
 logger = logging.getLogger()
-logger.setLevel(colorlog.colorlog.logging.DEBUG)
+logger.setLevel(colorlog.colorlog.logging.WARNING)
 
 handler = colorlog.StreamHandler()
 handler.setFormatter(colorlog.ColoredFormatter())
 logger.addHandler(handler)
 
 # Set up the argument parser.
-parser = argparse.ArgumentParser(description="Get 10 random Tweets from a Twitter username.")
+parser = argparse.ArgumentParser(description=("Download JSON data about one,"
+                                  "or many, Twitter usernames, and tosses"
+                                  "them into ./user_jsons/."))
 parser.add_argument('usernames', metavar="U", type=str, nargs='+',
                     help="A Twitter username, without the leading `@`.")
 parser.add_argument('-v', '--verbose', action='count',
-                    help="Set verbosity based on number of `v`s. `-v` = critical errors only; `-vvv` = default; `-vvvvv` = debug mode.")
+                    help=("Set verbosity based on number of `v`s. `-v` = "
+                    "critical errors only; `-vvv` = default; `-vvvvv` = "
+                    "debug mode."))
 parser.add_argument('-q', '--quiet', action='store_true',
                     help="All debug and error messages off. Overrides `-v`.")
 
 # Some os and os.path nonsense.
 pwd = os.path.dirname(os.path.abspath(__file__))
 user_json_dir = os.path.join(pwd, "user_jsons/")
+
 
 def users_overview(users):
     """Given a list of `User()` objects, prints some debug messages of
@@ -112,7 +117,8 @@ if __name__ == "__main__":
     logger.debug("User JSON files save location: {}".format(user_json_dir))
 
     if not os.path.exists(user_json_dir):
-        logger.warning("User JSON file directory doesn't exist - attempting to create @ {}".format(user_json_dir))
+        logger.warning(("User JSON file directory doesn't exist - attempting"
+                        " to create @ {}").format(user_json_dir))
         os.makedirs(user_json_dir)
 
     for data in auth_data:
@@ -133,10 +139,3 @@ if __name__ == "__main__":
     users_overview(users)
 
     dump_jsons(users)
-
-    for user in users:
-        for status in auth_api.user_timeline(user.id, tweet_mode="extended"):
-            text = status.full_text
-            for line in textwrap.wrap(text, replace_whitespace=False):
-                print(line)
-            print("-" * 70)

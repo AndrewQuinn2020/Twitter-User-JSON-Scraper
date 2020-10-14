@@ -31,36 +31,32 @@ if __name__ == "__main__":
 
     beat()
 
+
     print("**Letting this data be seen publicly is a security risk.**")
 
     beat()
 
-    print("That's why this file is listed in `.gitignore` -- so long as")
-    print("you don't remove `authentication_data.py` from `.gitignore`,")
-    print("you won't accidentally `git push` it yourself.")
+    print("If you're worried about forking this and accidentally pushing")
+    print("your private data, I strongly recommend you navigate to this")
+    print("directory and run the commend,")
 
     beat()
 
-    print("Let's check to make sure it's still there...")
+    print("    git update-index --assume-unchanged authentication_data.py")
 
     beat()
 
-    gitignore_path = os.path.join(os.path.dirname(__file__), ".gitignore")
+    print("This will make it so git stops tracking this file on your PC.")
 
-    print("Scanning for `authentication_data.py` in\n\n\t{}\n\n...\n\n".format(gitignore_path))
-
-    beat()
-
-    with open(gitignore_path, 'r') as file:
-        it_was_there = False
-        for line in file:
-            if "authentication_data.py" in line:
-                print("We got it!")
-                it_was_there = True
-                break
-        if not it_was_there:
-            print("Oh, we couldn't find it. Double check if you're worried!")
 
     beat()
 
+    print("    git update-index --no-assume-unchanged authentication_data.py")
+
+    beat()
+
+    print("will reverse this process.")
+
+    beat()
+    
     print("-" * 80)

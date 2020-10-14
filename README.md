@@ -4,6 +4,27 @@ A very simple CLI that goes through a list of Twitter usernames and downloads ba
 
 # Usage
 
+Clone this into a GitHub directory, and run it like so:
+
+```bash
+$ python scrape.py jack
+WARNING:root:User JSON file directory doesn't exist - attempting to create @ /........here.........../TenTweetsFrom/user_jsons/
+$ head user_jsons/jack__2020_10_14-20_59_09.json 
+{
+    "contributors_enabled": false,
+    "created_at": "Tue Mar 21 20:50:14 +0000 2006",
+    "default_profile": false,
+    "default_profile_image": false,
+    "description": "#bitcoin",
+    "entities": {
+        "description": {
+            "urls": []
+        }
+$ 
+```
+
+# Command-Line Options
+
 ```bash
 $ python scrape.py -h
 usage: scrape.py [-h] [-v] [-q] U [U ...]
@@ -36,7 +57,7 @@ $ head user_jsons/jack__2020_10_14-20_59_09.json
 $ 
 ```
 
-# Output
+# Example File Output
 ```json
 {
     "contributors_enabled": false,

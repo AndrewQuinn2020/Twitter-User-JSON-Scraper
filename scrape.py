@@ -88,8 +88,8 @@ def set_verbosity(args):
         return None
 
 def dump_json(user, dir=user_json_dir, timestamp=now().format('YYYY_MM_DD-HH_mm_ss')):
-    """Given User() objects, dump pretty printed versions of its
-    JSON files into dir.
+    """Given a User() object, dump pretty printed versions of its
+    JSON file into dir.
 
     Returns the path of the file it was saved into."""
     path = os.path.join(dir, str(user.screen_name) + "__" +

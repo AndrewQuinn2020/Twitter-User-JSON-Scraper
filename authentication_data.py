@@ -52,11 +52,14 @@ if __name__ == "__main__":
     beat()
 
     with open(gitignore_path, 'r') as file:
+        it_was_there = False
         for line in file:
             if "authentication_data.py" in line:
                 print("We got it!")
+                it_was_there = True
                 break
-        print("Oh, we couldn't find it. Double check if you're worried!")
+        if not it_was_there:
+            print("Oh, we couldn't find it. Double check if you're worried!")
 
     beat()
 

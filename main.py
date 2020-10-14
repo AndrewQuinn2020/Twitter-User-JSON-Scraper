@@ -5,6 +5,7 @@ import os
 import json
 import logging
 import argparse
+import textwrap
 
 # Third party libraries.
 # If these are missing, try running the command provided to install them.
@@ -132,3 +133,10 @@ if __name__ == "__main__":
     users_overview(users)
 
     dump_jsons(users)
+
+    for user in users:
+        for status in auth_api.user_timeline(user.id, tweet_mode="extended"):
+            text = status.full_text
+            for line in textwrap.wrap(text, replace_whitespace=False):
+                print(line)
+            print("-" * 70)

@@ -20,7 +20,7 @@ logger.addHandler(handler)
 
 if __name__ == "__main__":
     logger.info("Hello, TenTweetsFrom.")
-    logger.info("-" * 80)
+    logger.info("-" * 70)
 
     for data in auth_data:
         if len(data) == 0:

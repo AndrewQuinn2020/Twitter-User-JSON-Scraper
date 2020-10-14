@@ -1,12 +1,18 @@
 #!/usr/bin/python3
 
+# Standard libraries.
 import os
-
+import json
 import logging
-import colorlog                   # python -m pip install colorlog
-import tweepy as tw               # python -m pip install tweepy
 import argparse
 
+# Third party libraries.
+# If these are missing, try running the command provided to install them.
+import colorlog                   # python -m pip install colorlog
+import tweepy as tw               # python -m pip install tweepy
+from arrow import utcnow as now   # python -m pip install arrow
+
+# Other Python files in this directory.
 from authentication_data import *
 
 
@@ -83,9 +89,9 @@ if __name__ == "__main__":
     logger.debug("Arguments: {}".format(args))
     logger.debug("Present working directory: {}".format(pwd))
     logger.debug("User JSON files save location: {}".format(user_json_dir))
-    
+
     if not os.path.exists(user_json_dir):
-        logger.debug("User JSON file directory doesn't exist, creating {}".format(user_json_dir))
+        logger.warning("User JSON file directory doesn't exist - attempting to create @ {}".format(user_json_dir))
         os.makedirs(user_json_dir)
 
     for data in auth_data:
@@ -104,5 +110,12 @@ if __name__ == "__main__":
 
     users_overview(users)
 
-    # The documentation around what User objects actually provide you is
-    # a bit... lacking, on Tweepy. So we toss
+    # For the sake of making it easy to understand what the hell is going
+    # on with User() objects, we dump them all into user_json_dir.
+
+    timestamp = now().format('YYYY_MM_DD-HH_mm_ss')
+    for user in users:
+        path = os.path.join(user_json_dir, str(user.screen_name) + "__" + str(timestamp) + ".json")
+        with open(path, 'w') as file:
+            logger.debug("Writing JSON user data for {}, aka `@{}`, to {}.".format(user.name, user.screen_name, path))
+            json.dump(user._json, file, indent=4, sort_keys=True)

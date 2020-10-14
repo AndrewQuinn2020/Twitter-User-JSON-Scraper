@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import os
 
 import logging
 import colorlog                   # python -m pip install colorlog
@@ -7,6 +8,7 @@ import tweepy as tw               # python -m pip install tweepy
 import argparse
 
 from authentication_data import *
+
 
 # Setup the colored error message logger.
 logger = logging.getLogger()
@@ -18,12 +20,28 @@ logger.addHandler(handler)
 
 # Set up the argument parser.
 parser = argparse.ArgumentParser(description="Get 10 random Tweets from a Twitter username.")
-parser.add_argument('username', type=str, nargs=1,
-                    help="A single Twitter username, without the leading `@`.")
+parser.add_argument('usernames', metavar="U", type=str, nargs='+',
+                    help="A Twitter username, without the leading `@`.")
 parser.add_argument('-v', '--verbose', action='count',
                     help="Set verbosity based on number of `v`s. `-v` = critical errors only; `-vvv` = default; `-vvvvv` = debug mode.")
 parser.add_argument('-q', '--quiet', action='store_true',
                     help="All debug and error messages off. Overrides `-v`.")
+
+# Some os and os.path nonsense.
+pwd = os.path.dirname(os.path.abspath(__file__))
+user_json_dir = os.path.join(pwd, "user_jsons/")
+
+def users_overview(users):
+    """Given a list of `User()` objects, prints some debug messages of
+    interest about them."""
+
+    for user in users:
+        logger.debug("name: " + user.name)
+        logger.debug("screen_name: " + user.screen_name)
+        logger.debug("description: " + user.description)
+        logger.debug("statuses_count: " + str(user.statuses_count))
+        logger.debug("friends_count: " + str(user.friends_count))
+        logger.debug("followers_count: " + str(user.followers_count))
 
 
 def set_verbosity(args):
@@ -63,6 +81,12 @@ if __name__ == "__main__":
     set_verbosity(args)
     logger.info("Verbose mode enabled.")
     logger.debug("Arguments: {}".format(args))
+    logger.debug("Present working directory: {}".format(pwd))
+    logger.debug("User JSON files save location: {}".format(user_json_dir))
+    
+    if not os.path.exists(user_json_dir):
+        logger.debug("User JSON file directory doesn't exist, creating {}".format(user_json_dir))
+        os.makedirs(user_json_dir)
 
     for data in auth_data:
         if len(data) == 0:
@@ -71,3 +95,14 @@ if __name__ == "__main__":
     auth = tw.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     auth_api = tw.API(auth)
+
+    users = []
+    for username in args.usernames:
+        logger.info("Getting data from API for {}".format(username))
+        users.append(auth_api.get_user(username))
+        logger.info("{} acquired!".format(username))
+
+    users_overview(users)
+
+    # The documentation around what User objects actually provide you is
+    # a bit... lacking, on Tweepy. So we toss

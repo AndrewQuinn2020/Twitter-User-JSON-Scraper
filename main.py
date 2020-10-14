@@ -18,7 +18,7 @@ logger.addHandler(handler)
 
 # Set up the argument parser.
 parser = argparse.ArgumentParser(description="Get 10 random Tweets from a Twitter username.")
-parser.add_argument('username', metavar='U', type=str, nargs=1,
+parser.add_argument('username', type=str, nargs=1,
                     help="A single Twitter username, without the leading `@`.")
 parser.add_argument('-v', '--verbose', action='count',
                     help="Set verbosity based on number of `v`s. `-v` = critical errors only; `-vvv` = default; `-vvvvv` = debug mode.")

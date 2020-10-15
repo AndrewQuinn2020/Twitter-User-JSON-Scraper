@@ -1,21 +1,20 @@
 #!/usr/bin/python3
 
 # Standard libraries.
-import os
+import argparse
 import json
 import logging
-import argparse
+import os
 import textwrap
 
 # Third party libraries.
 # If these are missing, try running the command provided to install them.
-import colorlog                   # python -m pip install colorlog
-import tweepy as tw               # python -m pip install tweepy
-from arrow import utcnow as now   # python -m pip install arrow
+import colorlog  # python -m pip install colorlog
+import tweepy as tw  # python -m pip install tweepy
+from arrow import utcnow as now  # python -m pip install arrow
 
 # Other Python files in this directory.
 from authentication_data import *
-
 
 # Setup the colored error message logger.
 logger = logging.getLogger()
@@ -26,17 +25,36 @@ handler.setFormatter(colorlog.ColoredFormatter())
 logger.addHandler(handler)
 
 # Set up the argument parser.
-parser = argparse.ArgumentParser(description=("Download JSON data about one,"
-                                  "or many, Twitter usernames, and tosses"
-                                  "them into ./user_jsons/."))
-parser.add_argument('usernames', metavar="U", type=str, nargs='+',
-                    help="A Twitter username, without the leading `@`.")
-parser.add_argument('-v', '--verbose', action='count',
-                    help=("Set verbosity based on number of `v`s. `-v` = "
-                    "critical errors only; `-vvv` = default; `-vvvvv` = "
-                    "debug mode."))
-parser.add_argument('-q', '--quiet', action='store_true',
-                    help="All debug and error messages off. Overrides `-v`.")
+parser = argparse.ArgumentParser(
+    description=(
+        "Download JSON data about one,"
+        "or many, Twitter usernames, and tosses"
+        "them into ./user_jsons/."
+    )
+)
+parser.add_argument(
+    "usernames",
+    metavar="U",
+    type=str,
+    nargs="+",
+    help="A Twitter username, without the leading `@`.",
+)
+parser.add_argument(
+    "-v",
+    "--verbose",
+    action="count",
+    help=(
+        "Set verbosity based on number of `v`s. `-v` = "
+        "critical errors only; `-vvv` = default; `-vvvvv` = "
+        "debug mode."
+    ),
+)
+parser.add_argument(
+    "-q",
+    "--quiet",
+    action="store_true",
+    help="All debug and error messages off. Overrides `-v`.",
+)
 
 # Some os and os.path nonsense.
 pwd = os.path.dirname(os.path.abspath(__file__))
@@ -87,21 +105,25 @@ def set_verbosity(args):
     else:
         return None
 
-def dump_json(user, dir=user_json_dir, timestamp=now().format('YYYY_MM_DD-HH_mm_ss')):
+
+def dump_json(user, dir=user_json_dir, timestamp=now().format("YYYY_MM_DD-HH_mm_ss")):
     """Given a User() object, dump pretty printed versions of its
     JSON file into dir.
 
     Returns the path of the file it was saved into."""
-    path = os.path.join(dir, str(user.screen_name) + "__" +
-                        str(timestamp) + ".json")
-    with open(path, 'w') as file:
-        logger.info(("Writing JSON user data for {}, aka `@{}`, to "
-                    "\n\t{}".format(user.name, user.screen_name, path)))
+    path = os.path.join(dir, str(user.screen_name) + "__" + str(timestamp) + ".json")
+    with open(path, "w") as file:
+        logger.info(
+            (
+                "Writing JSON user data for {}, aka `@{}`, to "
+                "\n\t{}".format(user.name, user.screen_name, path)
+            )
+        )
         json.dump(user._json, file, indent=4, sort_keys=True)
     return path
 
 
-def dump_jsons(users, dir=user_json_dir, timestamp=now().format('YYYY_MM_DD-HH_mm_ss')):
+def dump_jsons(users, dir=user_json_dir, timestamp=now().format("YYYY_MM_DD-HH_mm_ss")):
     """Just a wrapper for dump_json over an iterable.
 
     Returns a list of the paths the files were saved into."""
@@ -117,8 +139,11 @@ if __name__ == "__main__":
     logger.debug("User JSON files save location: {}".format(user_json_dir))
 
     if not os.path.exists(user_json_dir):
-        logger.warning(("User JSON file directory doesn't exist - attempting"
-                        " to create @ {}").format(user_json_dir))
+        logger.warning(
+            (
+                "User JSON file directory doesn't exist - attempting" " to create @ {}"
+            ).format(user_json_dir)
+        )
         os.makedirs(user_json_dir)
 
     for data in auth_data:
